@@ -1,0 +1,95 @@
+/*calculate row wise mean,max,min
+calculate coloumn wise mean max min
+of a random matrix with values 0-100*/
+#include<stdio.h>
+#include<time.h>
+#include<stdlib.h>
+int MAX(int a,int b)
+{
+if(a>b)
+	return a;
+else return b;
+}
+int MIN(int a,int b)
+{
+if(a<b)
+	return a;
+else return b;
+}
+int main()
+{
+	int i,j,max,min,amin,total,atotal,amax,m,n,mat[100][100],rmax[100],rmin[100],cmax[100],cmin[100]; 
+	float rmean[100],cmean[100],amean;
+	srand(time(0));
+	max =-88889;	
+	total = 0;
+	min = 99999;
+	amax =-48727;
+	amean = -88889;	
+	atotal = 0;
+	printf("enter the values of the M and N\n");
+	scanf("%d %d",&m,&n);
+	for(i=0;i<m;i++)
+	{
+		for(j=0;j<n;j++)
+		{
+			mat[i][j] = (rand()%101) ; /*/filling up the random matrix*/
+		}
+	}
+	printf("the matrix is \n");
+	for(i=0;i<m;i++)
+	{
+		for(j=0;j<n;j++)
+		{
+			printf("%d ",mat[i][j]);
+			
+		}
+		printf("\n");
+	}
+	/*/////////row wise mean, calculations/////////*/
+	for(i=0;i<m;i++)
+	{
+		for(j=0;j<n;j++)
+		{
+		total += mat[i][j];
+		rmean[i] = total/m;
+		atotal += mat[i][j];
+		amax = max;
+		amin = min;
+		rmax[i] = max; 
+		rmin[i] = min;
+		amax = MAX(amax,mat[i][j]);
+		amin = MIN(amin,mat[i][j]);
+		rmin[i] = MIN(rmin[i],mat[i][j]);
+		rmax[i] = MAX(rmax[i],mat[i][j]);
+		rmean[i] = MIN(rmin[i],mat[i][i]);
+		}
+	}
+	amean = atotal/(m*n);
+	/////////coloumn wise calculations////////// 
+	for(j=0;j<n;j++)
+	{
+		for(i=0;i<m;i++)
+		{
+			cmax[j] = max;
+			cmin[j] = min;	
+			total += mat[i][j];
+			cmean[i] = total/n;
+			cmax[j] = MAX(cmax[j],mat[i][j]);
+			cmin[j] = MIN(cmin[j],mat[i][j]);
+		}
+	}
+	
+printf("the value of the mean & max & min of the whole matrix is %f %d %d\n",amean,amax,amin);
+for(i=0;i<m;i++)
+{
+printf("the ith row mean,max,min is %f %d %d \n",rmean[i],rmax[i],rmin[i]);
+
+}
+}
+
+
+
+
+
+
