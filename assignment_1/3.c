@@ -9,6 +9,7 @@ output- the mean,max,min row-wise and coloumn wise*/
 #include<stdio.h>
 #include<time.h>
 #include<stdlib.h>
+#include<string.h>
 int MAX(int a,int b)
 {
 if(a>b)
@@ -23,15 +24,13 @@ else return b;
 }
 int main()
 {
-	int i,j,max,min,amin,total,atotal,amax,m,n,mat[100][100],rmax[100],rmin[100],cmax[100],cmin[100]; 
+	int i,j,max,min,amin=9999,total,atotal,amax=-1,m,n,mat[100][100],rmax[100],rmin[100],cmax[100],cmin[100]; 
 	float rmean[100],cmean[100],amean;
-	srand(time(0));
-	max =-88889;	
-	total = 0;
-	min = 99999;
-	amax =-48727;
-	amean = -88889;	
-	atotal = 0;
+	memset(rmax,-1,sizeof(rmax));
+	memset(rmean,0,sizeof(rmean));
+	memset(cmean,0,sizeof(cmean));
+	memset(cmax,-1,sizeof(cmax));
+	
 	printf("enter the values of the M and N\n");
 	scanf("%d %d",&m,&n);
 	for(i=0;i<m;i++)
@@ -51,50 +50,50 @@ int main()
 		}
 		printf("\n");
 	}
-	/*/////////row wise mean, calculations/////////*/
+	/*int amax = -1;
+	int amin = 999999;*/
+	/*/////////total calculations/////////*/
 	for(i=0;i<m;i++)
 	{
 		for(j=0;j<n;j++)
 		{
-		total += mat[i][j];
-		rmean[i] = total/m;
-		atotal += mat[i][j];
-		amax = max;
-		amin = min;
-		rmax[i] = max; 
-		rmin[i] = min;
+		amean += ((float)mat[i][j]/(float)(m*n));
 		amax = MAX(amax,mat[i][j]);
 		amin = MIN(amin,mat[i][j]);
-		rmin[i] = MIN(rmin[i],mat[i][j]);
-		rmax[i] = MAX(rmax[i],mat[i][j]);
-		rmean[i] = MIN(rmin[i],mat[i][i]);
 		}
 	}
-	amean = atotal/(m*n);
-	/////////coloumn wise calculations////////// 
+	////setting up mins//////////////////
+	for(i=0,j=0;i<m,i<n;i++,j++)
+	{
+		cmin[j] = 99999;
+		rmin[i] = 99999;
+	}
+	/////row wise calculations///////
+	for(i=0;i<m;i++)
+	{
+		for(j=0;j<n;j++)
+		{
+			rmax[i] = MAX(rmax[i],mat[i][j]);
+			rmin[i] = MIN(rmin[i],mat[i][j]);
+			rmean[i] +=((float)mat[i][j]/(float)(m));
+		}
+	}
 	for(j=0;j<n;j++)
 	{
 		for(i=0;i<m;i++)
 		{
-			cmax[j] = max;
-			cmin[j] = min;	
-			total += mat[i][j];
-			cmean[i] = total/n;
-			cmax[j] = MAX(cmax[j],mat[i][j]);
 			cmin[j] = MIN(cmin[j],mat[i][j]);
+			cmax[j] = MAX(cmax[j],mat[i][j]);
+			cmean[j] += ((float)mat[i][j]/(float)(n)); 
 		}
 	}
-	
 printf("the value of the mean & max & min of the whole matrix is %f %d %d\n",amean,amax,amin);
 for(i=0;i<m;i++)
 {
-printf("the ith row mean,max,min is %f %d %d \n",rmean[i],rmax[i],rmin[i]);
-
+printf("the %dth row mean,max,min is %f %d %d \n",i,rmean[i],rmax[i],rmin[i]);
+}
+for(j=0;j<n;j++)
+{
+	printf("the %d th coloumn min max and mean is %f %d %d\n ",j,cmean[j],cmax[j],cmin[j]);
 }
 }
-
-
-
-
-
-
