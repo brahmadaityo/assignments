@@ -1,2 +1,2 @@
-# assignments
-its the solution of different lab assignments given at IIEST,shibpur
+# simulation lab
+its the solution of simulation lab assignments given at IIEST,shibpur
