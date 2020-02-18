@@ -9,7 +9,7 @@ fprintf('the values of U & V are\n');
 disp(u);
 disp(v);
 fprintf('the value of U*D*V and A are \n')
-z = u*d*v;
+z = u*d*(v)';
 disp(z);
 disp(A)
 %fprintf('both matrices are same A = U*D*V \n');
