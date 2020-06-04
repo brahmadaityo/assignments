@@ -17,9 +17,9 @@ function[] = MedianFiltering()
     prompt = 'Please, Enter the Block Size :'; %option to input the size of block e.g 3x3,5x5,7x7
     BLOCK_SIZE = input(prompt); %the size of each block will be BLOCK_SIZE x BLOCK_SIZE 
     
-    for i = 1:(+BLOCK_SIZE):(Xmax-BLOCK_SIZE)
+    for i = 1:(Xmax-BLOCK_SIZE)
         
-        for j = 1:(+BLOCK_SIZE):(Ymax-BLOCK_SIZE)
+        for j = 1:(Ymax-BLOCK_SIZE)
             
             Xcentre = i + floor(BLOCK_SIZE/2); % X Co-ordinate of the central pixel
             %for example if BLOCK_SIZE = 3 then floor(3/2) = floor(1.5) = 1
@@ -37,8 +37,21 @@ function[] = MedianFiltering()
     end
     imshow(Greyscale_Image_Array);
 end
-
 function[ Avg ] = MedianOfBlock(x,y,Block,BLOCK_SIZE)
+%this function is a sub procedure for the computation of average value of the sub matrix
+%it takes three parameters,the position of block takes two arguments x,y
+%the third argument is the size of the square matrix
+for i = 1:BLOCK_SIZE
+    for j = 1:BLOCK_SIZE
+        b(i,j) = Block(x+i-1,y+j-1);
+    end
+end
+Avg = median(median(b));
+
+
+end
+
+function[ Avg ] = MedianOfBlock2(x,y,Block,BLOCK_SIZE)
 %this function is a sub procedure for the computation of average value of the sub matrix
 %it takes three parameters,the position of block takes two arguments x,y
 %the third argument is the size of the square matrix
