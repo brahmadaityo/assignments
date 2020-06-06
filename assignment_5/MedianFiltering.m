@@ -1,5 +1,5 @@
 %author: Siddhartha Ghosal
-%date : 04.06.2020
+%date : 06.06.2020
 %assignment no. 5
 function[] = MedianFiltering()  
 %This function doesn't require any input arguments
@@ -58,11 +58,10 @@ k = 1;
 %Block() = [];
 for i = 1:BLOCK_SIZE
     for j = 1:BLOCK_SIZE    
-        if i ~= ceil(BLOCK_SIZE/2) || j ~= ceil(BLOCK_SIZE/2)
             a(k) = Block(x+i-1,y+j-1);
             k = k+1;
-        %if k == ceil((BLOCK_SIZE*BLOCK_SIZE)/2) //if the 
-        %    j = j+1;
+        if k == ceil((BLOCK_SIZE*BLOCK_SIZE)/2)
+            j = j+1; %if the value of k = index of central element then skip it 
         end
     end
 end
