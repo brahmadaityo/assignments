@@ -3,8 +3,7 @@
 %assignment no. 5
 function[] = MedianFiltering()  
 %This function doesn't require any input arguments
-%It loads the image which is pred
-%efined in the program as train.jpg
+%It loads the image which is predefined in the program
 %The image is then converted into the greyscale image using matlab buitin
 %function and then it uses the standard median filtering algorithm to 
 %remove noise from the picture
