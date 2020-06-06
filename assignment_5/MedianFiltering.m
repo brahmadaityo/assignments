@@ -1,25 +1,36 @@
 %author: Siddhartha Ghosal
-%date : 03.06.2020
+%date : 04.06.2020
 %assignment no. 5
 function[] = MedianFiltering()  
 %This function doesn't require any input arguments
-%It loads the image which is predefined in the program as train.jpg
-%The image is then converted into the greyscale image
+%It loads the image which is pred
+%efined in the program as train.jpg
+%The image is then converted into the greyscale image using matlab buitin
+%function and then it uses the standard median filtering algorithm to 
+%remove noise from the picture
+%as it can be seen from experimental point of view that 3x3 block median
+%filtering gives the best filtering of the image
 %Then standard Medain Filtering procedure is used for cleaning noise
 
-    My_Image = 'sqrl.jpg'; %sample image taken as input  
-    Image_Array = imread(My_Image); %reading it into a X*Y*3 size array by inbuilt imread() function 
+    My_Image = 'sqrln.png'; %sample image taken as input 
+    %imshow(My_Image);
+    Image_Array = imread(My_Image); %reading it into a X*Y*3 size array by inbuilt imread() function
     Greyscale_Image_Array = rgb2gray(Image_Array); %converting the image into a grayscale X*Y array
+    imshow(Greyscale_Image_Array);
+    fprintf("if the rgb2gray() is not used the the image will be saved as 3D Matrix of size X*Y*3\n");
     %imshow(Greyscale_Image_Array);   %option to view the greyscale image(COMMENTED OUT)
-    fprintf("The size of the image is \n"); 
+    fprintf("The size of the greyscale image is \n"); 
     disp(size(Greyscale_Image_Array)); %displaying the size of the image in pixels
     [Xmax,Ymax] = size(Greyscale_Image_Array); %reading the Xdim and Ydim of image into Xmax and Ymax
     prompt = 'Please, Enter the Block Size :'; %option to input the size of block e.g 3x3,5x5,7x7
     BLOCK_SIZE = input(prompt); %the size of each block will be BLOCK_SIZE x BLOCK_SIZE 
+    %padding with 0's to make both sides Multiple of BLOCK_SIZE
+    Padded_Array = padarray(Greyscale_Image_Array,[mod(Xmax,BLOCK_SIZE) mod(Ymax,BLOCK_SIZE)],0,'both');
+    [Xnew,Ynew] = size(Padded_Array); %Xnew and Ynew corresponds to the new size of padded array
     
-    for i = 1:(Xmax-BLOCK_SIZE)
+    for i = 1:(Xnew-BLOCK_SIZE)
         
-        for j = 1:(Ymax-BLOCK_SIZE)
+        for j = 1:(Ynew-BLOCK_SIZE)
             
             Xcentre = i + floor(BLOCK_SIZE/2); % X Co-ordinate of the central pixel
             %for example if BLOCK_SIZE = 3 then floor(3/2) = floor(1.5) = 1
@@ -31,42 +42,32 @@ function[] = MedianFiltering()
             Ycentre = j + floor(BLOCK_SIZE/2); % Y Co-ordinate of the central pixel
             %Replacing the value of central pixel with the Median of the surroundings of that block 
             %And the MedianOfBlock() Sub-procedure is called 
-            Greyscale_Image_Array(Xcentre,Ycentre) = MedianOfBlock(i,j,Greyscale_Image_Array,BLOCK_SIZE);  
+            Padded_Array(Xcentre,Ycentre) = MedianOfBlock(i,j,Padded_Array,BLOCK_SIZE,Ynew);  
         end
         
     end
-    imshow(Greyscale_Image_Array);
+    imshow(Padded_Array);
+    imsave();
 end
-function[ Avg ] = MedianOfBlock(x,y,Block,BLOCK_SIZE)
+
+function[ MEDIAN ] = MedianOfBlock(x,y,Block,BLOCK_SIZE,Ymax)
 %this function is a sub procedure for the computation of average value of the sub matrix
-%it takes three parameters,the position of block takes two arguments x,y
+%it takes three para meters,the position of block takes two arguments x,y
 %the third argument is the size of the square matrix
+k = 1;
+%Block() = [];
 for i = 1:BLOCK_SIZE
-    for j = 1:BLOCK_SIZE
-        b(i,j) = Block(x+i-1,y+j-1);
-    end
-end
-Avg = median(median(b));
-
-
-end
-
-function[ Avg ] = MedianOfBlock2(x,y,Block,BLOCK_SIZE)
-%this function is a sub procedure for the computation of average value of the sub matrix
-%it takes three parameters,the position of block takes two arguments x,y
-%the third argument is the size of the square matrix
-    Sum = 0;
-    for i= x:(x+BLOCK_SIZE)
-        
-        for j = y:(y+BLOCK_SIZE)
-            
-            %its the sum with the central element%
-            
-            Sum  = Sum + Block(i,j); 
+    for j = 1:BLOCK_SIZE    
+        if i ~= ceil(BLOCK_SIZE/2) || j ~= ceil(BLOCK_SIZE/2)
+            a(k) = Block(x+i-1,y+j-1);
+            k = k+1;
+        %if k == ceil((BLOCK_SIZE*BLOCK_SIZE)/2) //if the 
+        %    j = j+1;
         end
     end
-    %substracting the value of the central element from the sum
-    %now the sum is S1+S2+...+SN + C - C = S1 + ...SN
-    Sum = Sum - Block( x+floor(BLOCK_SIZE/2),y+floor(BLOCK_SIZE/2) );
-    Avg = ceil(Sum/((BLOCK_SIZE*BLOCK_SIZE)-1)); %to make the median to a integer inbuilt Ceil function is called 
+end
+disp(a);
+b = sort(a); %sorting the temporary array 
+MEDIAN = b(ceil((BLOCK_SIZE*BLOCK_SIZE)/2)); %the median is the mid element of the sorted array
+
 end
